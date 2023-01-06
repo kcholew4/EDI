@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto 0 auto;
+}
+
+.table-container {
+    max-width: 1000px;
+    margin: 0 auto 0 auto;
+    margin-top: 100px;
+}
+
+.table {
+    max-height: 700px;
+    overflow: auto;
+}
