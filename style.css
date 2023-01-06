@@ -5,9 +5,36 @@
     box-sizing: border-box;
 }
 
+.navbar {
+    background-color: rgb(19, 19, 19) !important;
+    color: #f8f9fa !important;
+}
+
+.cnt {
+    max-width: 1000px;
+    margin: 0 auto 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
 body {
     font-family: 'Lora', serif;
     font-size: 20px;
+    background-color: #212529;
+    color: #f8f9fa;
+}
+
+header{
+    padding-top: 60px;
+    text-align: center;
+}
+
+a {
+    font-family: 'Raleway', sans-serif;
+    text-decoration: none;
+}
+.navbar-brand {
+    font-weight: 700;
 }
 
 h1, h2, h3, h4, h5 {
@@ -23,10 +50,53 @@ h1, h2, h3, h4, h5 {
 .table-container {
     max-width: 1000px;
     margin: 0 auto 0 auto;
-    margin-top: 100px;
-}
-
-.table {
+    margin-top: 60px;
+    margin-bottom: 60px;
     max-height: 700px;
     overflow: auto;
 }
+
+table {
+    overflow: auto;
+    color: var(--bs-light);
+}
+
+.table-light{
+    color: var(--bs-dark);
+}
+
+.charts-section {
+    margin: 0 auto 0 auto;
+    max-width: 1000px;
+    margin-top: 50px;
+}
+
+
+.pie-charts {
+    max-width: 1000px;
+    margin: 0 auto 0 auto;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    /* align-items: center; */
+    /* border: 1px solid white; */
+}
+
+.chart {
+    width: 420px;
+    flex-grow: 0;
+    /* border: 1px solid white; */
+    margin-bottom: 100px;
+}
+
+.pie-charts {
+    margin-top: 100px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0 20px 0;
+    border-top: 1px solid rgb(117, 117, 117);
+}
+
