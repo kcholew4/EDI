@@ -5,10 +5,12 @@
  */
 const fetchData = async () => {
   //Tutaj wysyłanie jest zapytanie do API
-  const response = await fetch("https://my.api.mockaroo.com/edi.json?key=08ed3400");
+  let response = await fetch("https://my.api.mockaroo.com/edi.json?key=08ed3400");
 
   if (response.status === 429) {
-    alert("Limit przekroczony :(");
+    //Kiedy API mocaroo przekroczy limit, wczytaj dane z pliku
+    response = await fetch("EDI.json");
+    alert("API limit exceeded, data loaded from the backup file.");
   }
 
   //Zamiana obiektu Response na text
