@@ -3,15 +3,9 @@
  * Kazdy element zwróconej tablicy jest wierszem w tabeli.
  * @returns {Array} Tablica zawierająca dane pobrane z API
  */
-const fetchData = async () => {
-  //Tutaj wysyłanie jest zapytanie do API
-  let response = await fetch("https://my.api.mockaroo.com/edi.json?key=08ed3400");
-
-  if (response.status === 429) {
-    //Kiedy API mocaroo przekroczy limit, wczytaj dane z pliku
-    response = await fetch("EDI.json");
-    alert("API limit exceeded, data loaded from the backup file.");
-  }
+const fetchData = async (source) => {
+  //Tutaj wysyłanie jest zapytanie do API (dane są pobierane z pliku JSON)
+  let response = await fetch(source);
 
   //Zamiana obiektu Response na text
   const text = await response.text();
@@ -69,6 +63,12 @@ const drawTable = (data) => {
     //Umieszczamy stworzony element <tr> w #table-body
     tableBody.appendChild(tr);
   }
+
+  //Zwraca funkcję, która czyści tabelę - przydatne gdy się kliknie w przycisk zmiany zrodla danych
+  return () => {
+    tableBody.innerHTML = "";
+    tableHead.innerHTML = "";
+  };
 };
 
 /**
@@ -139,7 +139,7 @@ const drawCountriesChart = (data) => {
   //Tworzymy config
   const config = createChartConfig("bar", "# of players", countries);
   //I rysujemy wykres
-  new Chart(ctx, config);
+  return new Chart(ctx, config);
 };
 
 /**
@@ -169,7 +169,7 @@ const drawGenderChart = (data) => {
   //Bierzemy element, tworzymy config i rysujemy wykres
   const ctx = document.getElementById("gender-chart");
   const config = createChartConfig("pie", "Players gender", genders);
-  new Chart(ctx, config);
+  return new Chart(ctx, config);
 };
 
 /**
@@ -201,17 +201,35 @@ const drawPlayTimeChart = (data) => {
   //Bierzemy element, tworzymy config i rysujemy wykres
   const ctx = document.getElementById("playtime-chart");
   const config = createChartConfig("pie", "Playtime by gender", playtime);
-  new Chart(ctx, config);
+  return new Chart(ctx, config);
 };
 
-//Wywolujemy funcje ktora zwraca dane pobrane z API i zapisujemy je w zmiennej
-//await - czyli czekamy az dane zostana pobrane z API
-const data = await fetchData();
+const showData = async (source) => {
+  //Wywolujemy funcje ktora zwraca dane pobrane z API i zapisujemy je w zmiennej
+  //await - czyli czekamy az dane zostana pobrane z API
+  const data = await fetchData(source);
 
-//Renderujemy tabele
-drawTable(data);
+  //Renderujemy tabele, cleanTable to funkcja która czyści tabele
+  const clearTable = drawTable(data);
 
-//Renderujemy wykresy
-drawCountriesChart(data);
-drawGenderChart(data);
-drawPlayTimeChart(data);
+  //Renderujemy wykresy
+  const charts = [drawCountriesChart(data), drawGenderChart(data), drawPlayTimeChart(data)];
+
+  //Zwraca funkcję która czyści tabele i wykresy
+  return () => {
+    charts.forEach((chart) => chart.destroy());
+    clearTable();
+  };
+};
+
+const sourceButtons = document.querySelectorAll(".source-btn");
+
+let clearData = await showData("EDI.json");
+
+sourceButtons.forEach((button) => {
+  button.addEventListener("click", async (event) => {
+    clearData();
+    //event.target.dataset.source to atrybut data-source w buttonie w html
+    clearData = await showData(event.target.dataset.source);
+  });
+});
